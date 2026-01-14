@@ -42,6 +42,12 @@ describe('CreatePaymentUseCase', () => {
     const out = await uc.execute({ cpf: '12345678909', description: 'cc', amount: 10, paymentMethod: 'CREDIT_CARD' });
 
     expect(out.status).toBe('PENDING');
-    expect(out.id).toBe('p1');
+    expect(out.id).toBeDefined();
+    expect(temporal.startCreditCardWorkflow).toHaveBeenCalledWith(expect.objectContaining({
+      cpf: '12345678909',
+      description: 'cc',
+      amount: 10,
+      paymentId: out.id
+    }));
   });
 });
